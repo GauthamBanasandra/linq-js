@@ -20,7 +20,7 @@ stmt:
                                                                         {$7->name, $7->lineno}
                                                                     };
                                                 int len=sizeof(args)/sizeof(struct symtab);
-                                                gen_code("template.dat", args, len);
+                                                gen_code("./templates/template.dat", args, len);
                                         }
     | stmt SELECT ID FROM ID JOIN ID ON ID WHERE NUM    {
                                                             struct symtab args[]=
@@ -32,7 +32,7 @@ stmt:
 					                                                                {$11->name, $11->lineno}
 					                                                            };
 					                                        int len=sizeof(args)/sizeof(struct symtab);
-					                                        gen_code("inner_join.dat", args, len);
+					                                        gen_code("./templates/inner_join.dat", args, len);
                                                         }
     |
     ;
