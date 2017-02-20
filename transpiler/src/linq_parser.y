@@ -46,7 +46,7 @@ void yyerror(char* s)
 
 int main()
 {
-    yyin=fopen("input.txt", "r");
+    yyin=fopen("../inputs/input.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

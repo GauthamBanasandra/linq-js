@@ -10,4 +10,4 @@ gcc linq_lexer.c linq_parser.c codegen.c
 a.exe > plain.js
 python strip_newline.py plain.js
 js-beautify plain.js | node
-del *.c *.h
+del *.c y.tab.h
