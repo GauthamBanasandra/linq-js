@@ -1,0 +1,13 @@
+@var
+$clause $srcone $srctwo $joincond $cond
+
+@code
+(function (list1, list2, key) {
+        var newList = new Set();
+        for (var i = 0; i < list1.length; ++i)
+            for (var j = 0; j < list2.length; ++j)
+                if (list1[i][key] === list2[j][key])
+                    newList.add([list1[i], list2[j]]);
+
+        return newList;
+})($srcone, $srctwo, '$joincond');

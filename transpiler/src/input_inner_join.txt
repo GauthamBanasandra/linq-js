@@ -1,0 +1,21 @@
+var students = [];
+for (var i = 0; i < 5; ++i) {
+    var student = {};
+    student['name'] = 'xyz' + i;
+    student['rollno'] = Math.floor(Math.random() * 6) + 1;
+    students.push(student);
+}
+var students1 = [];
+for (var i=0; i < 5; ++i) {
+    var student = {};
+    student['name'] = 'xyz' + (i+5);
+    student['rollno'] = Math.floor(Math.random() * 6) + 1;
+    students1.push(student);
+}
+
+var same_roll =
+			select student
+			from students join students1 on rollno
+			where 1;
+console.log('same roll no');
+console.log(same_roll);

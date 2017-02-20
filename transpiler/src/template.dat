@@ -1,0 +1,21 @@
+@var
+$clause $source $cond
+
+@code
+(function (){
+	if(typeof $source === 'undefined')
+		throw 'line $source#lineno: $source is undefined';
+	if(!($source instanceof Array))
+		throw 'line $source#lineno: expected list for "$source" but got '+typeof $source;
+
+	var i=0,
+		newList=[],
+		$clause;
+	for(i in $source){
+		$clause=$source[i];
+		if($cond){
+			newList.push($clause);
+		}
+	}
+	return newList;
+})();
