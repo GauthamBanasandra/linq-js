@@ -23,6 +23,8 @@ select  {
 <SEL>where  {return WHERE;}
 <SEL>join   {return JOIN;}
 <SEL>on {return ON;}
+<SEL>"("    {return yytext[0];}
+<SEL>")"    {return yytext[0];}
 <SEL>{letters}[a-zA-Z0-9_$]+   {
 									yylval.symp=symlook(yytext);
 									return ID;

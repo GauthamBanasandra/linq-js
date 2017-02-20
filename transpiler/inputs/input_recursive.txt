@@ -1,0 +1,19 @@
+function linq_query()
+{
+	var fruits = ['apple', 'mango', 'banana', 'grapes'];
+	var new_fruits =
+				select fruit
+                from    (
+                            select fruit
+                            from    (
+                                        select fruit
+                                        from fruits
+                                        where 2
+                                    )
+                            where 2
+                        )
+                where 2;
+
+	console.log(new_fruits);
+}
+linq_query();
