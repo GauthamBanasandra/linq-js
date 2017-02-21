@@ -5,7 +5,7 @@
     #include "y.tab.h"
 
     void yyerror(char*);
-    int lineno=1;
+    int lineno=1, first=1;
 %}
 letters [a-zA-Z_$]
 %s SEL
@@ -17,6 +17,11 @@ letters [a-zA-Z_$]
 select  {
 			BEGIN SEL;
 			yylval.symp=symlook(yytext);
+			if(first)
+			{
+			    printf("(function(){\n");
+			    first=0;
+			}
 			return SELECT;
 		}
 <SEL>from   {return FROM;}
@@ -25,7 +30,7 @@ select  {
 <SEL>on {return ON;}
 <SEL>"("    {return yytext[0];}
 <SEL>")"    {return yytext[0];}
-<SEL>{letters}[a-zA-Z0-9_$]+   {
+<SEL>{letters}[a-zA-Z0-9_$]+    {
 									yylval.symp=symlook(yytext);
 									return ID;
 								}
@@ -34,7 +39,10 @@ select  {
 				return NUM;
 			}
 <SEL>"."    {return yytext[0];}
-<SEL>";"    {BEGIN INITIAL;}
+<SEL>";"    {
+                BEGIN INITIAL;
+                printf("return s1;\n})();\n");
+            }
 EOF {return 0;}
 .   ECHO;
 %%

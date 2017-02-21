@@ -5,6 +5,8 @@
     int yylex();
     void yyerror(char*);
     void gen_code(char*, struct symtab [], int);
+
+    int first_parser=1, nesting=1, count=0;
 %}
 %union{
 	struct symtab* symp;
@@ -32,20 +34,30 @@ stmt:
 src:
     ID
     | '(' linq ')'  {
+                        sprintf($2->name, "s%d", nesting);
                         /*Do not omit this line. Yacc will not be able to perform default action otherwise.*/
                         $$=$2;
+                        ++nesting;
                     }
     ;
 linq:
     SELECT ID FROM src WHERE NUM    {
-                                            struct symtab args[]=
-                                                                {
-                                                                    {$2->name, $2->lineno},
-                                                                    {$4->name, $4->lineno},
-                                                                    {$6->name, $6->lineno}
-                                                                };
-                                            int len=sizeof(args)/sizeof(struct symtab);
-                                            gen_code("./templates/template.dat", args, len);
+                                        char var[10];
+                                        sprintf(var, "s%d", nesting);
+
+                                        if(!first_parser)
+                                            sprintf($4->name, "s%d", nesting-1);
+
+                                        first_parser=0;
+                                        struct symtab args[]=
+                                                            {
+                                                                {$2->name, $2->lineno},
+                                                                {$4->name, $4->lineno},
+                                                                {$6->name, $6->lineno}
+                                                            };
+                                        int len=sizeof(args)/sizeof(struct symtab);
+                                        printf("var %s=", var);
+                                        gen_code("./templates/template.dat", args, len);
                                     }
     ;
 %%
