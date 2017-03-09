@@ -70,7 +70,7 @@ void yyerror(char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_recursive.txt", "r");
+    yyin=fopen("../inputs/input_inner_join.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);
