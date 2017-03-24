@@ -37,7 +37,7 @@ src:
                     }
     ;
 linq:
-    SELECT ID FROM src WHERE NUM    {
+    FROM src WHERE NUM SELECT ID    {
                                         char var[10];
                                         sprintf(var, "s%d", nesting);
 
@@ -57,7 +57,7 @@ linq:
                                     }
     ;
 join:
-    SELECT ID FROM src JOIN src ON ID WHERE NUM   {
+    FROM src JOIN src ON src WHERE NUM SELECT ID   {
                                                     char var[10];
                                                     sprintf(var, "s%d", nesting);
 

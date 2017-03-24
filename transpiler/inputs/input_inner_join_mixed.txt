@@ -16,8 +16,8 @@ for (var i=0; i < 5; ++i) {
 var fruits = ['apple', 'mango', 'banana', 'grapes'];
 
 var same_roll =
-			select student
-			from (select student from students join students1 on rollno where 1) join students1 on rollno
-			where 1;
+            from (from students join students1 on rollno where 1 select student) join (from students join students1 on rollno where 1 select student) on rollno
+            where 1
+			select student;
 console.log('same roll no');
 console.log(same_roll);

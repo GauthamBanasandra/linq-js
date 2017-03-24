@@ -1,5 +1,5 @@
 @var
-$clause $srcone $srctwo $joincond $cond
+$srcone $srctwo $joincond $cond $clause
 
 @code
 (function (list1, list2, key) {

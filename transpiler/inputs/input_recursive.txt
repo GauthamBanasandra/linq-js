@@ -2,18 +2,17 @@ function linq_query()
 {
 	var fruits = ['apple', 'mango', 'banana', 'grapes'];
 	var new_fruits =
-				select fruit
                 from    (
-                            select fruit
                             from    (
-                                        select fruit
                                         from fruits
                                         where 2
+                                        select fruit
                                     )
                             where 2
+                            select fruit
                         )
-                where 2;
-
+                where 2
+				select fruit;
 	console.log(new_fruits);
 }
 linq_query();

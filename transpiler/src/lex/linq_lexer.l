@@ -8,38 +8,38 @@
     int lineno=1, first=1;
 %}
 letters [a-zA-Z_$]
-%s SEL
+%s LINQ
 %%
 \n  {
 		++lineno;
 		ECHO;
 	}
-select  {
-			BEGIN SEL;
+from  {
+			BEGIN LINQ;
 			yylval.symp=symlook(yytext);
 			if(first)
 			{
 			    printf("(function(){\n");
 			    first=0;
 			}
-			return SELECT;
+			return FROM;
 		}
-<SEL>from   {return FROM;}
-<SEL>where  {return WHERE;}
-<SEL>join   {return JOIN;}
-<SEL>on {return ON;}
-<SEL>"("    {return yytext[0];}
-<SEL>")"    {return yytext[0];}
-<SEL>{letters}[a-zA-Z0-9_$]+    {
+<LINQ>select    {return SELECT;}
+<LINQ>where  {return WHERE;}
+<LINQ>join   {return JOIN;}
+<LINQ>on {return ON;}
+<LINQ>"("    {return yytext[0];}
+<LINQ>")"    {return yytext[0];}
+<LINQ>{letters}[a-zA-Z0-9_$]+    {
 									yylval.symp=symlook(yytext);
 									return ID;
 								}
-<SEL>[0-9]+ {
+<LINQ>[0-9]+ {
 				yylval.symp=symlook(yytext);
 				return NUM;
 			}
-<SEL>"."    {return yytext[0];}
-<SEL>";"    {
+<LINQ>"."    {return yytext[0];}
+<LINQ>";"    {
                 BEGIN INITIAL;
                 printf("return s1;\n})();\n");
             }

@@ -2,9 +2,9 @@ function linq_query()
 {
 	var fruits = ['apple', 'mango', 'banana', 'grapes'];
 	var new_fruits =
-				select fruit
-                from fruits
-                where 2;
+	            from fruits
+				where 2
+				select fruit;
 
 	console.log(new_fruits);
 }

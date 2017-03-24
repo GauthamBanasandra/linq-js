@@ -14,8 +14,8 @@ for (var i=0; i < 5; ++i) {
 }
 
 var same_roll =
-			select student
-			from student join students1 on rollno
-			where 1;
+            from student join students1 on rollno
+            where 1
+			select student;
 console.log('same roll no');
 console.log(same_roll);
