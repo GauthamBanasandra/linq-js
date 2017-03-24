@@ -11,7 +11,7 @@
 %union{
 	struct symtab* symp;
 }
-%token <symp> SELECT FROM WHERE ID NUM JOIN ON
+%token <symp> SELECT FROM WHERE ID NUM JOIN ON IN EXPR
 %type <symp> src
 %type <symp> linq
 %type <symp> join
@@ -37,19 +37,20 @@ src:
                     }
     ;
 linq:
-    FROM src WHERE NUM SELECT ID    {
+    FROM ID IN src WHERE EXPR SELECT ID    {
                                         char var[10];
                                         sprintf(var, "s%d", nesting);
 
                                         if(!first_parser)
-                                            sprintf($4->name, "s%d", nesting-1);
+                                            sprintf($6->name, "s%d", nesting-1);
 
                                         first_parser=0;
                                         struct symtab args[]=
                                                             {
                                                                 {$2->name, $2->lineno},
                                                                 {$4->name, $4->lineno},
-                                                                {$6->name, $6->lineno}
+                                                                {$6->name, $6->lineno},
+                                                                {$8->name, $8->lineno}
                                                             };
                                         int len=sizeof(args)/sizeof(struct symtab);
                                         printf("var %s=", var);
@@ -57,7 +58,7 @@ linq:
                                     }
     ;
 join:
-    FROM src JOIN src ON src WHERE NUM SELECT ID   {
+    FROM src JOIN src ON src WHERE EXPR SELECT ID   {
                                                     char var[10];
                                                     sprintf(var, "s%d", nesting);
 
@@ -88,7 +89,7 @@ void yyerror(char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_inner_join_mixed.txt", "r");
+    yyin=fopen("../inputs/input.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

@@ -2,8 +2,8 @@ function linq_query()
 {
 	var fruits = ['apple', 'mango', 'banana', 'grapes'];
 	var new_fruits =
-	            from fruits
-				where 2
+	            from fruit in fruits
+				where (fruit.length == 5)
 				select fruit;
 
 	console.log(new_fruits);

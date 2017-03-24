@@ -7,8 +7,7 @@
     void yyerror(char*);
     int lineno=1, first=1;
 %}
-letters [a-zA-Z_$]
-%s LINQ
+%x LINQ IN_WHERE
 %%
 \n  {
 		++lineno;
@@ -25,21 +24,30 @@ from  {
 			return FROM;
 		}
 <LINQ>select    {return SELECT;}
-<LINQ>where  {return WHERE;}
+<LINQ>where  {
+                BEGIN IN_WHERE;
+                return WHERE;
+             }
+<IN_WHERE>[(].+[)] {
+                        BEGIN LINQ;
+                        yylval.symp=symlook(yytext);
+                        return EXPR;
+                    }
 <LINQ>join   {return JOIN;}
 <LINQ>on {return ON;}
+<LINQ>in {return IN;}
 <LINQ>"("    {return yytext[0];}
 <LINQ>")"    {return yytext[0];}
-<LINQ>{letters}[a-zA-Z0-9_$]+    {
+<LINQ>[a-zA-Z_$][a-zA-Z0-9_$]+    {
 									yylval.symp=symlook(yytext);
 									return ID;
 								}
-<LINQ>[0-9]+ {
-				yylval.symp=symlook(yytext);
-				return NUM;
-			}
+<LINQ>[0-9]+    {
+                    yylval.symp=symlook(yytext);
+                    return NUM;
+                }
 <LINQ>"."    {return yytext[0];}
-<LINQ>";"    {
+<LINQ>";"   {
                 BEGIN INITIAL;
                 printf("return s1;\n})();\n");
             }

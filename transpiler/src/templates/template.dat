@@ -1,5 +1,5 @@
 @var
-$source $cond $clause
+$instance $source $cond $clause
 
 @code
 (function (){
@@ -8,11 +8,9 @@ $source $cond $clause
 	if(!($source instanceof Array))
 		throw 'line $source#lineno: expected list for "$source" but got '+typeof $source;
 
-	var i=0,
-		newList=[],
+	var newList=[],
 		$clause;
-	for(i in $source){
-		$clause=$source[i];
+	for($instance of $source){
 		if($cond){
 			newList.push($clause);
 		}
