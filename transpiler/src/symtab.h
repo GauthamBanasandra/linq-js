@@ -1,9 +1,14 @@
+#ifndef SYMTAB_H
+#define SYMTAB_H
+
 #define NSYMS 200
 
 struct symtab
 {
 	char* name;
 	int lineno;
-} symtab[NSYMS];
+};
 
 struct symtab* symlook(char*);
+
+#endif

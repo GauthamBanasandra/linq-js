@@ -4,8 +4,9 @@
     #include "symtab.h"
     #include "y.tab.h"
 
-    void yyerror(char*);
+    void yyerror(const char*);
     int lineno=1, first=1;
+    struct symtab symtab[200];
 %}
 %x LINQ IN_WHERE
 %%
@@ -28,7 +29,7 @@ from  {
                 BEGIN IN_WHERE;
                 return WHERE;
              }
-<IN_WHERE>[(].+[)] {
+<IN_WHERE>[(].+[)]  {
                         BEGIN LINQ;
                         yylval.symp=symlook(yytext);
                         return EXPR;

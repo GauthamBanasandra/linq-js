@@ -21,7 +21,7 @@
 					if(nvars+1>=NVARS_MEMCP)
 					{
 						NVARS_MEMCP+=10;
-						vars=realloc(vars, NVARS_MEMCP*sizeof(char*));
+						vars=(char **)realloc(vars, NVARS_MEMCP*sizeof(char*));
 					}
 					vars[nvars++]=strdup(yytext);
 				}
@@ -30,7 +30,7 @@
 				BEGIN GEN;
 
 				NVARS_MEMCP=nvars;
-                vars=realloc(vars, nvars*sizeof(char*));
+                vars=(char **)realloc(vars, nvars*sizeof(char*));
 			}
 <GEN>$[a-zA-Z]+ {
 					struct symtab* sym=lookup_var(yytext);
@@ -74,13 +74,13 @@ struct symtab* lookup_var(char* text)
         if(!strcmp(text, vars[i]))
             return &values[i];
 
-    return (void*)0;
+    return NULL;
 }
 
-void gen_code(char* template, struct symtab args[], int len)
+void gen_code(const char* _template, struct symtab args[], int len)
 {
 	values=args;
-	yyin=fopen(template, "r");
+	yyin=fopen(_template, "r");
 	yylex();
 	fclose(yyin);
 	free(vars);

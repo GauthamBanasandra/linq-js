@@ -3,9 +3,8 @@
 	#include "symtab.h"
 
     int yylex();
-    void yyerror(char*);
-    void gen_code(char*, struct symtab [], int);
-
+    void yyerror(const char*);
+    void gen_code(const char*, struct symtab [], int);
     int first_parser=1, nesting=1, count=0;
 %}
 %union{
@@ -82,7 +81,7 @@ join:
 %%
 extern FILE* yyin;
 
-void yyerror(char* s)
+void yyerror(const char* s)
 {
     fprintf(stderr, "%s", s);
 }
