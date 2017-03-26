@@ -5,7 +5,9 @@
     int yylex();
     void yyerror(const char*);
     void gen_code(const char*, struct symtab [], int);
-    int first_parser=1, nesting=1, count=0;
+
+    int nesting = 1;
+    bool innermost = true;
 %}
 %union{
 	struct symtab* symp;
@@ -40,10 +42,10 @@ linq:
                                         char var[10];
                                         sprintf(var, "s%d", nesting);
 
-                                        if(!first_parser)
-                                            sprintf($6->name, "s%d", nesting-1);
+                                        if(!innermost)
+                                            sprintf($4->name, "s%d", nesting-1);
 
-                                        first_parser=0;
+                                        innermost = false;
                                         struct symtab args[]=
                                                             {
                                                                 {$2->name, $2->lineno},
@@ -61,10 +63,10 @@ join:
                                                     char var[10];
                                                     sprintf(var, "s%d", nesting);
 
-                                                    if(!first_parser)
+                                                    if(!innermost)
                                                         sprintf($4->name, "s%d", nesting-1);
 
-                                                    first_parser=0;
+                                                    innermost = false;
 
                                                     struct symtab args[]=
                                                                         {

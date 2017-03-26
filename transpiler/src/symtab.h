@@ -9,6 +9,6 @@ struct symtab
 	int lineno;
 };
 
-struct symtab* symlook(char*);
+struct symtab* symlook(const char*);
 
 #endif
