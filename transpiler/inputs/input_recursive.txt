@@ -7,7 +7,6 @@ function linq_query()
 	            from fr in
 	                (
                         from fru in fruits
-                        where {fru.length >3}
                         select fru
                     )
 	            where {fr.length <= 5}
