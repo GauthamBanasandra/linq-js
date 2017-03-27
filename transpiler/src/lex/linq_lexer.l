@@ -77,6 +77,12 @@ from  {
 									yylval.symp=symlook(yytext);
 									return ID;
 								}
+<LINQ>[a-zA-Z_$][a-zA-Z0-9_$().]+   {
+                                        yylval.symp = symlook(yytext);
+                                        // debug.
+                                        cout << "e_id " << yytext << endl;
+                                        return E_ID;
+                                    }
 <LINQ>[0-9]+    {
                     yylval.symp=symlook(yytext);
                     return NUM;

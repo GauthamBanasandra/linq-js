@@ -9,7 +9,7 @@ $instance $source $cond $clause
 		throw 'line $source#lineno: expected list for "$source" but got '+typeof $source;
 
 	var newList=[],
-		$clause;
+		$instance;
 	for($instance of $source){
 		if($cond){
 			newList.push($clause);

@@ -12,10 +12,11 @@
 %union{
 	struct symtab* symp;
 }
-%token <symp> SELECT FROM WHERE ID NUM JOIN ON IN EXPR
+%token <symp> SELECT FROM WHERE ID NUM JOIN ON IN EXPR E_ID
 %type <symp> src
 %type <symp> linq
 %type <symp> join
+%type <symp> sel_clause
 %%
 stmt:
     stmt linq
@@ -38,7 +39,7 @@ src:
                     }
     ;
 linq:
-    FROM ID IN src WHERE EXPR SELECT ID {
+    FROM ID IN src WHERE EXPR SELECT sel_clause {
                                             char var[10];
                                             sprintf(var, "s%d", nesting);
 
@@ -57,7 +58,7 @@ linq:
                                             printf("var %s=", var);
                                             gen_code("./templates/template.dat", args, len);
                                         }
-    | FROM ID IN src SELECT ID  {
+    | FROM ID IN src SELECT sel_clause  {
                                     // In this production, the 'where' clause is optional.
                                     char var[10];
                                     sprintf(var, "s%d", nesting);
@@ -81,6 +82,9 @@ linq:
                                     gen_code("./templates/template.dat", args, len);
                                 }
     ;
+sel_clause:
+    ID
+    | E_ID;
 join:
     FROM src JOIN src ON src WHERE EXPR SELECT ID   {
                                                     char var[10];
@@ -113,7 +117,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_recursive.txt", "r");
+    yyin=fopen("../inputs/input.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);
