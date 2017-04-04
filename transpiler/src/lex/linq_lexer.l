@@ -11,8 +11,8 @@
     extern int nesting;
     void yyerror(const char*);
 
-    bool cat = false;
-    int lineno = 1, first = 1;
+    bool cat = false, first = true;
+    int lineno = 1;
     struct symtab symtab[2000];
     string expr_str;
 %}
@@ -30,7 +30,7 @@ from  {
 			if(first)
 			{
 			    printf("(function(){\n");
-			    first=0;
+			    first=false;
 			}
 			return FROM;
 		}
@@ -64,6 +64,9 @@ from  {
 <LINQ>join   {return JOIN;}
 <LINQ>on {return ON;}
 <LINQ>in {return IN;}
+<LINQ>ascending {return ASC;}
+<LINQ>descending    {return DSC;}
+<LINQ>orderby   {return ORDERBY;}
 <LINQ>"("   {
                 BEGIN INITIAL;
                 // debug.
@@ -80,7 +83,7 @@ from  {
 <LINQ>[a-zA-Z_$][a-zA-Z0-9_$().]+   {
                                         yylval.symp = symlook(yytext);
                                         // debug.
-                                        cout << "e_id " << yytext << endl;
+//                                        cout << "e_id " << yytext << endl;
                                         return E_ID;
                                     }
 <LINQ>[0-9]+    {
@@ -90,6 +93,7 @@ from  {
 <LINQ>"."    {return yytext[0];}
 <LINQ>";"   {
                 BEGIN INITIAL;
+                first = true;
                 cout << "return s" << nesting << ";\n})();" << endl;
             }
 EOF {return 0;}

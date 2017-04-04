@@ -1,0 +1,23 @@
+@var
+$orderop $ordervar $inst $src $accumulator
+
+@code
+if($src.length > 0) {
+    var $inst = $src[0];
+    switch(typeof $ordervar) {
+    case 'number':
+        $accumulator.sort(function (a, b){
+            return a-b;
+        });
+        break;
+    case 'string':
+        $accumulator.sort();
+        break;
+    default:
+        throw 'typeof $ordervar is not orderable';
+    }
+
+    if(/$orderop/.test('descending')){
+        $accumulator.sort().reverse();
+    }
+}

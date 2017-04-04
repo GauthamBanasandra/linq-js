@@ -3,8 +3,9 @@ function linq_query()
 	var fruits = ['apple', 'mango', 'banana', 'grapes'];
 	var new_fruits =
 	            from fruit in fruits
+				orderby fruit.length
 				where {fruit.length == 5}
-				select fruit.length;
+				select fruit;
 
 	console.log(new_fruits);
 }
