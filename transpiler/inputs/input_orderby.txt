@@ -3,7 +3,7 @@ function linq_query()
 	var fruits = ['apple', 'mango', 'banana', 'grapes'];
 	var new_fruits =
 	            from fruit in fruits
-				orderby fruit
+				orderby fruit descending
 				select fruit;
 
 	console.log(new_fruits);

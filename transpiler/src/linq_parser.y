@@ -71,10 +71,9 @@ linq:
 
                                                   if (orderby)
                                                   {
-                                                      char temp[]="ascending";
                                                       struct symtab ob_args[]=
                                                                             {
-                                                                                {temp, -1},
+                                                                                {orderby->metadata, -1},
                                                                                 {orderby->name, orderby->lineno},
                                                                                 {id->name, id->lineno},
                                                                                 {src->name, src->lineno},
@@ -93,7 +92,17 @@ where:
     |   {$$ = NULL;}
     ;
 orderby:
-    ORDERBY id    {$$ = $2;}
+    ORDERBY id  {$$ = $2;}
+    | ORDERBY id ASC    {
+                            $$ = $2;
+                            char asc[] = "ascending";
+                            $$->metadata = asc;
+                        }
+    | ORDERBY id DSC {
+                         $$ = $2;
+                         char dsc[] = "descending";
+                         $$->metadata = dsc;
+                     }
     |   {$$ = NULL;}
     ;
 id:
@@ -137,7 +146,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_orderby_recursive.txt", "r");
+    yyin=fopen("../inputs/input_orderby.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

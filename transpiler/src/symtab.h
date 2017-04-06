@@ -7,6 +7,7 @@ struct symtab
 {
 	char* name;
 	int lineno;
+	char* metadata;
 };
 
 struct symtab* symlook(const char*);
