@@ -3,11 +3,17 @@
 
 #define NSYMS 200
 
-struct symtab
-{
-	char* name;
+struct symtab {
+	char *name;
 	int lineno;
-	char* metadata;
+	char *metadata;
+	struct gp_meta_struct *gp_meta;
+};
+
+struct gp_meta_struct {
+    char *alias;
+    char *gp_prop;
+    char *target;
 };
 
 struct symtab* symlook(const char*);

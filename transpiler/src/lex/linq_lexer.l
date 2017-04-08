@@ -61,6 +61,9 @@ from  {
                     cat = true;
                 }
             }
+<LINQ>group {return GROUP;}
+<LINQ>by    {return BY;}
+<LINQ>into  {return INTO;}
 <LINQ>join   {return JOIN;}
 <LINQ>on {return ON;}
 <LINQ>in {return IN;}

@@ -1,0 +1,20 @@
+@var
+$alias $src $cond $gprop $tgt
+
+@code
+(function (){
+    var $alias,
+        newList = [],
+        $tgt = {};
+    for($alias of $src) {
+        if($cond) {
+            if($tgt[$gprop]) {
+                $tgt[$gprop].push($alias);
+            } else {
+                $tgt[$gprop] = [$alias];
+            }
+        }
+    }
+
+    return $tgt;
+})();
