@@ -18,44 +18,24 @@
 %union{
 	struct symtab* symp;
 }
-%token <symp> SELECT FROM WHERE ID NUM JOIN ON IN EXPR E_ID ASC DSC ORDERBY GROUP BY INTO
+%token <symp> SELECT FROM WHERE ID NUM JOIN ON IN EXPR E_ID ASC DSC ORDERBY GROUP BY INTO EQUALS
 %type <symp> src
 %type <symp> linq
-%type <symp> join
 %type <symp> sel_clause
 %type <symp> where
 %type <symp> orderby
+%type <symp> join
 %type <symp> groupby
 %type <symp> id
 %%
-stmt:
-    stmt linq
-    | stmt join
-    |
-    ;
-src:
-    ID
-    | '(' linq ')'  {
-                        sprintf($2->name, "s%d", nesting);
-                        /*Do not omit this line. Yacc will not be able to perform default action otherwise.*/
-                        $$=$2;
-                        ++nesting;
-                    }
-    | '(' join ')'  {
-                        sprintf($2->name, "s%d", nesting);
-                        /*Do not omit this line. Yacc will not be able to perform default action otherwise.*/
-                        $$=$2;
-                        ++nesting;
-                    }
-    ;
 linq:
-    FROM ID IN src orderby where groupby SELECT sel_clause  {
+    FROM ID IN src orderby where join groupby SELECT sel_clause  {
         struct symtab *id = $2,
                     *src = $4,
                     *orderby = $5,
                     *where = $6,
-                    *groupby = $7,
-                    *sel_clause = $9;
+                    *groupby = $8,
+                    *sel_clause = $10;
         char var[10];
         sprintf(var, "s%d", nesting);
 
@@ -81,13 +61,12 @@ linq:
             printf("var %s=", var);
             gen_code("./templates/groupby.dat", args, len);
         } else {
-            struct symtab args[]=
-                              {
-                                  {id->name, id->lineno},
-                                  {src->name, src->lineno},
-                                  {where ? where->name : dummy_true, where ? where->lineno: -1},
-                                  {sel_clause->name, sel_clause->lineno}
-                              };
+            struct symtab args[]= {
+                {id->name, id->lineno},
+                {src->name, src->lineno},
+                {where ? where->name : dummy_true, where ? where->lineno: -1},
+                {sel_clause->name, sel_clause->lineno}
+            };
             int len = sizeof(args)/sizeof(struct symtab);
             printf("var %s=", var);
             gen_code("./templates/template.dat", args, len);
@@ -105,6 +84,16 @@ linq:
                 gen_code("./templates/orderby.dat", ob_args, ob_len);
             }
         }
+    }
+    | {$$ = NULL;}
+    ;
+src:
+    ID
+    | '(' linq ')'  {
+        sprintf($2->name, "s%d", nesting);
+        /*Do not omit this line. Yacc will not be able to perform default action otherwise.*/
+        $$=$2;
+        ++nesting;
     }
     ;
 groupby:
@@ -151,37 +140,16 @@ orderby:
     }
     |   {$$ = NULL;}
     ;
+join:
+    JOIN ID IN ID ON ID EQUALS E_ID {
+
+    }
+    |   {$$ = NULL;}
+    ;
 id:
     ID
     | E_ID
     ;
-join:
-    FROM src JOIN src ON src WHERE EXPR SELECT ID   {
-      /*                                                              struct symtab *id = $2,
-                                                                    *src = src,
-                                                                    *orderby = $5,
-                                                                    *where = $6,
-                                                                    *sel_clause = $8;
-                                                    char var[10];
-                                                    sprintf(var, "s%d", nesting);
-
-                                                    if(!innermost)
-                                                        sprintf(src->name, "s%d", nesting-1);
-
-                                                    innermost = false;
-
-                                                    struct symtab args[]=
-                                                                        {
-                                                                            {id->name, id->lineno},
-                                                                            {src->name, src->lineno},
-                                                                            {$6->name, $6->lineno},
-                                                                            {$8->name, $8->lineno},
-                                                                            {$10->name, $10->lineno}
-                                                                        };
-                                                    int len=sizeof(args)/sizeof(struct symtab);
-                                                    printf("var %s=", var);
-                                                    gen_code("./templates/inner_join.dat", args, len);*/
-                                                }
 %%
 extern FILE* yyin;
 
@@ -192,7 +160,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_orderby.txt", "r");
+    yyin=fopen("../inputs/input_orderby_recursive.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);
