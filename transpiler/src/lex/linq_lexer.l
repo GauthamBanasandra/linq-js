@@ -11,12 +11,12 @@
     extern int nesting;
     void yyerror(const char*);
 
-    bool cat = false, first = true;
+    bool cat = false, first = true, sel_first = false;
     int lineno = 1;
     struct symtab symtab[2000];
     string expr_str;
 %}
-%x LINQ IN_WHERE
+%x LINQ IN_WHERE IN_SELECT
 %%
 \n  {
 		++lineno;
@@ -34,7 +34,13 @@ from  {
 			}
 			return FROM;
 		}
-<LINQ>select    {return SELECT;}
+<LINQ>select    {
+        BEGIN IN_SELECT;
+        sel_first = true;
+        // debug.
+//        cout << "at select" << endl;
+        return SELECT;
+    }
 <LINQ>where  {
                 BEGIN IN_WHERE;
                 return WHERE;
@@ -61,6 +67,38 @@ from  {
                     cat = true;
                 }
             }
+<IN_SELECT>[ \t]    ;
+<IN_SELECT>.    {
+        // debug.
+//        cout << "first char " << yytext[0] << endl;
+        if(sel_first && yytext[0] != '[') {
+            unput(yytext[0]);
+            BEGIN LINQ;
+        }
+        sel_first = false;
+
+        if(yytext[0]==']')
+        {
+            cat = false;
+            // debug.
+//            cout << expr_str << endl;
+
+            BEGIN LINQ;
+            yylval.symp = symlook(expr_str.c_str());
+            expr_str = "";
+            return EXPR;
+        }
+
+        if(cat)
+        {
+            expr_str += yytext[0];
+        }
+
+        if(yytext[0]=='[')
+        {
+            cat = true;
+        }
+    }
 <LINQ>group {return GROUP;}
 <LINQ>by    {return BY;}
 <LINQ>into  {return INTO;}
@@ -83,7 +121,7 @@ from  {
 									yylval.symp=symlook(yytext);
 									return ID;
 								}
-<LINQ>[a-zA-Z_$][a-zA-Z0-9_$().]+   {
+<LINQ>[a-zA-Z_$][a-zA-Z0-9_$().,]+   {
                                         yylval.symp = symlook(yytext);
                                         // debug.
 //                                        cout << "e_id " << yytext << endl;
@@ -102,13 +140,11 @@ from  {
 EOF {return 0;}
 .   ECHO;
 %%
-int yywrap()
-{
+int yywrap() {
     return 1;
 }
 
-struct symtab* symlook(const char* s)
-{
+struct symtab* symlook(const char* s) {
     struct symtab* sp;
 
     for(sp=symtab; sp<&symtab[2000]; sp++)

@@ -1,5 +1,7 @@
 %{
     // TODO : Major bug fix needed - syntax error if alias length is 1.
+    // TODO : Handle orderby in group by.
+    // TODO : Handle LINQ statements inside comments and strings.
     #include <stdio.h>
     #include <string.h>
     #include <iostream>
@@ -93,8 +95,8 @@ linq:
             if (orderby) {
                 struct symtab ob_args[]=
                                     {
-                                        {orderby->metadata, -1},
-                                        {orderby->name, orderby->lineno},
+                                        {orderby->o_meta->order, -1},
+                                        {orderby->o_meta->prop, orderby->lineno},
                                         {id->name, id->lineno},
                                         {src->name, src->lineno},
                                         {var, -1}
@@ -118,22 +120,34 @@ groupby:
     ;
 sel_clause:
     ID
-    | E_ID;
+    | E_ID
+    | EXPR
+    ;
 where:
     WHERE EXPR    {$$ = $2;}
     |   {$$ = NULL;}
     ;
 orderby:
-    ORDERBY id  {$$ = $2;}
+    ORDERBY id  {
+        struct o_meta_struct meta;
+        meta.prop = $2->name;
+        meta.order = strdup("ascending");
+
+        $$->o_meta = &meta;
+    }
     | ORDERBY id ASC    {
-        $$ = $2;
-        char asc[] = "ascending";
-        $$->metadata = asc;
+        struct o_meta_struct meta;
+        meta.prop = $2->name;
+        meta.order = strdup("ascending");
+
+        $$->o_meta = &meta;
     }
     | ORDERBY id DSC {
-        $$ = $2;
-        char dsc[] = "descending";
-        $$->metadata = dsc;
+        struct o_meta_struct meta;
+        meta.prop = $2->name;
+        meta.order = strdup("descending");
+
+        $$->o_meta = &meta;
     }
     |   {$$ = NULL;}
     ;
@@ -178,7 +192,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_groupby.txt", "r");
+    yyin=fopen("../inputs/input_orderby.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

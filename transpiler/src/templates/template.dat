@@ -9,10 +9,20 @@ $instance $source $cond $clause
 		throw 'line $source#lineno: expected list for "$source" but got '+typeof $source;
 
 	var newList=[],
-		$instance;
-	for($instance of $source){
+		$instance,
+		selMultiple = false;
+
+    if('$clause'.includes(',')) {
+        selMultiple = true;
+    }
+
+	for($instance of $source) {
 		if($cond){
-			newList.push($clause);
+		    if(selMultiple) {
+		        newList.push([$clause]);
+		    } else {
+		        newList.push($clause);
+		    }
 		}
 	}
 	return newList;

@@ -6,7 +6,7 @@
 struct symtab {
 	char *name;
 	int lineno;
-	char *metadata;
+	struct o_meta_struct *o_meta;
 	struct gp_meta_struct *gp_meta;
 };
 
