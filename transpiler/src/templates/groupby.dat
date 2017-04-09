@@ -4,7 +4,6 @@ $alias $src $cond $gprop $tgt
 @code
 (function (){
     var $alias,
-        newList = [],
         $tgt = {};
     for($alias of $src) {
         if($cond) {

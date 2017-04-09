@@ -1,4 +1,5 @@
 %{
+    // TODO : Major bug fix needed - syntax error if alias length is 1.
     #include <stdio.h>
     #include <string.h>
     #include <iostream>
@@ -177,7 +178,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_orderby_recursive.txt", "r");
+    yyin=fopen("../inputs/input_groupby.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

@@ -16,6 +16,11 @@ struct gp_meta_struct {
     char *target;
 };
 
+struct o_meta_struct {
+    char *prop;
+    char *order;
+};
+
 struct symtab* symlook(const char*);
 
 #endif
