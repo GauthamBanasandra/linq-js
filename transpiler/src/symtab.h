@@ -8,6 +8,7 @@ struct symtab {
 	int lineno;
 	struct o_meta_struct *o_meta;
 	struct gp_meta_struct *gp_meta;
+	struct j_meta_struct *j_meta;
 };
 
 struct gp_meta_struct {
@@ -19,6 +20,13 @@ struct gp_meta_struct {
 struct o_meta_struct {
     char *prop;
     char *order;
+};
+
+struct j_meta_struct {
+    char *alias;
+    char *src;
+    char *cond1;
+    char *cond2;
 };
 
 struct symtab* symlook(const char*);

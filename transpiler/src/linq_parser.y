@@ -29,11 +29,13 @@
 %type <symp> id
 %%
 linq:
-    FROM ID IN src orderby where join groupby SELECT sel_clause  {
+    FROM ID IN src orderby join where groupby SELECT sel_clause  {
+        bool sel_exec = true;
         struct symtab *id = $2,
                     *src = $4,
                     *orderby = $5,
-                    *where = $6,
+                    *join = $6,
+                    *where = $7,
                     *groupby = $8,
                     *sel_clause = $10;
         char var[10];
@@ -45,7 +47,35 @@ linq:
 
         char dummy_true[] = "true";
 
+        if(join) {
+            sel_exec = false;
+            struct symtab args[] = {
+                {join->j_meta->alias, -1},
+                {id->name, -1},
+                {join->j_meta->src, -1},
+                {src->name, -1},
+                {join->j_meta->cond1, -1},
+                {join->j_meta->cond2, -1},
+                {where ? where->name : dummy_true, where ? where->lineno: -1},
+                {sel_clause->name, sel_clause->lineno}
+            };
+            int len = sizeof(args)/sizeof(struct symtab);
+
+            // debug.
+            // cout << join->j_meta->alias << endl;
+            // cout << id->name << endl;
+            // cout << join->j_meta->src << endl;
+            // cout << src->name << endl;
+            // cout << join->j_meta->cond1 << endl;
+            // cout << join->j_meta->cond2 << endl;
+            // cout << (where ? where->name : dummy_true) << endl;
+            // cout << sel_clause->name << endl;
+            printf("var %s=", var);
+            gen_code("./templates/join.dat", args, len);
+        }
+
         if(groupby) {
+        sel_exec = false;
         // debug.
         // cout << "group by meta: " << groupby->gp_meta->alias << '\n';
         // cout << "group by meta: " << groupby->gp_meta->gp_prop << '\n';
@@ -60,7 +90,9 @@ linq:
             int len = sizeof(args)/sizeof(struct symtab);
             printf("var %s=", var);
             gen_code("./templates/groupby.dat", args, len);
-        } else {
+        }
+
+        if(sel_exec) {
             struct symtab args[]= {
                 {id->name, id->lineno},
                 {src->name, src->lineno},
@@ -70,19 +102,18 @@ linq:
             int len = sizeof(args)/sizeof(struct symtab);
             printf("var %s=", var);
             gen_code("./templates/template.dat", args, len);
+        }
 
-            if (orderby) {
-                struct symtab ob_args[]=
-                                    {
-                                        {orderby->o_meta->order, -1},
-                                        {orderby->o_meta->prop, orderby->lineno},
-                                        {id->name, id->lineno},
-                                        {src->name, src->lineno},
-                                        {var, -1}
-                                    };
-                int ob_len=sizeof(ob_args)/sizeof(struct symtab);
-                gen_code("./templates/orderby.dat", ob_args, ob_len);
-            }
+        if (orderby) {
+            struct symtab ob_args[]= {
+                {orderby->o_meta->order, -1},
+                {orderby->o_meta->prop, orderby->lineno},
+                {id->name, id->lineno},
+                {src->name, src->lineno},
+                {var, -1}
+            };
+            int ob_len=sizeof(ob_args)/sizeof(struct symtab);
+            gen_code("./templates/orderby.dat", ob_args, ob_len);
         }
     }
     | {$$ = NULL;}
@@ -141,8 +172,14 @@ orderby:
     |   {$$ = NULL;}
     ;
 join:
-    JOIN ID IN ID ON ID EQUALS E_ID {
+    JOIN ID IN ID ON E_ID EQUALS E_ID {
+        struct j_meta_struct meta;
+        meta.alias = $2->name;
+        meta.src = $4->name;
+        meta.cond1 = $6->name;
+        meta.cond2 = $8->name;
 
+        $$->j_meta = &meta;
     }
     |   {$$ = NULL;}
     ;
@@ -160,7 +197,7 @@ void yyerror(const char* s)
 
 int main()
 {
-    yyin=fopen("../inputs/input_orderby_recursive.txt", "r");
+    yyin=fopen("../inputs/input_join.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

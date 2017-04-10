@@ -1,0 +1,35 @@
+@var
+$aliasone $aliastwo $srcone $srctwo $condone $condtwo $filter $clause
+
+@code
+(function () {
+    if(typeof $srcone === 'undefined')
+        throw 'line $srcone#lineno: $srcone is undefined';
+    if(typeof $srctwo === 'undefined')
+        throw 'line $srctwo#lineno: $srctwo is undefined';
+
+    var newList = [],
+        selMultiple = false,
+        $aliasone,
+        $aliastwo;
+
+    if('$clause'.includes(',')) {
+            selMultiple = true;
+        }
+
+    for(var $aliasone of $srcone) {
+        for(var $aliastwo of $srctwo) {
+            if($condone == $condtwo) {
+                if($filter) {
+                    if(selMultiple) {
+                        newList.push([$clause]);
+                    } else {
+                        newList.push($clause);
+                    }
+                }
+            }
+        }
+    }
+
+    return newList;
+})();
