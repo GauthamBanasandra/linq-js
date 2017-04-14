@@ -25,6 +25,8 @@ The interaction between the various components of the systems is depicted as sho
 ### For Mac
 >$brew install flex <br/>
 >$brew install byacc
-
+### Building
+Run build.bat on Windows and build.sh on Mac or Ubuntu.
 ### Examples
 The examples for LINQ Js can be found in the [inputs](https://github.com/GauthamBanasandra/linq-js/tree/master/transpiler/inputs) directory.
+
