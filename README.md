@@ -1,4 +1,4 @@
-# LINQ Js
+# linq-js
 LINQ Js is a transpiler which enables the programmers to use LINQ in JavaScript to support the processing of JavaScript objects. It is made more natural and elegant by allowing the programmer to use LINQ statements directly in JavaScript.
 ### What we could achieve
 Here is an example showing how programming could be simplified by embedding LINQ into JavaScript.
