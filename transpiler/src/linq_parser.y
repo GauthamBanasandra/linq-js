@@ -195,9 +195,11 @@ void yyerror(const char* s)
     fprintf(stderr, "%s", s);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    yyin=fopen("../inputs/input_join.txt", "r");
+     //"../inputs/input_join.txt"
+//    yyin=fopen(argv[1], "r");
+    yyin=fopen("../inputs/input_groupby.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

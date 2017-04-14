@@ -18,12 +18,11 @@ The interaction between the various components of the systems is depicted as sho
 >Thus, the output consists of syntactically and semantically valid JavaScript program.
 ##
 ## Installation
-For Windows
+### For Windows
 >Install from Sourceforge - [FLEX](http://gnuwin32.sourceforge.net/packages/flex.htm) and [BISON](http://gnuwin32.sourceforge.net/packages/bison.htm)
 
-For Mac
->$brew install flex
-
+### For Mac
+>$brew install flex <br/>
 >$brew install byacc
 
 ### Examples
