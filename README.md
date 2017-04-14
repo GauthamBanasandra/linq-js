@@ -7,7 +7,7 @@ Here is an example showing how programming could be simplified by embedding LINQ
 LINQ Js parses LINQ embedded JavaScript program and transpiles only the LINQ statements into syntactically and semantically valid JavaScript statements, while leaving the rest of the JavaScript statements in the program intact.
 
 After parsing the LINQ statements, it substitutes the corresponding data processing logic statements that are defined for JavaScript. For example,
-![Under the hood](https://s1.postimg.org/cna9ess33/Under_the_hood.png)
+![Under the hood](https://s28.postimg.org/d79droiil/Under_the_hood.png)
 ### How does it work?
 The interaction between the various components of the systems is depicted as shown below -
 ![Architecture](https://s8.postimg.org/i7c852tlx/Architecture.png)
