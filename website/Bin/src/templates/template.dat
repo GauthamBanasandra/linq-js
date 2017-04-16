@@ -1,0 +1,29 @@
+@var
+$instance $source $cond $clause
+
+@code
+(function (){
+	if(typeof $source === 'undefined')
+		throw 'line $source#lineno: $source is undefined';
+	if(!($source instanceof Array))
+		throw 'line $source#lineno: expected list for "$source" but got '+typeof $source;
+
+	var newList=[],
+		$instance,
+		selMultiple = false;
+
+    if('$clause'.includes(',')) {
+        selMultiple = true;
+    }
+
+	for($instance of $source) {
+		if($cond){
+		    if(selMultiple) {
+		        newList.push([$clause]);
+		    } else {
+		        newList.push($clause);
+		    }
+		}
+	}
+	return newList;
+})();
