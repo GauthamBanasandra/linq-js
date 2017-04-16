@@ -1,11 +1,21 @@
+function Student(name, age, sem) {
+    this.name = name;
+    this.age = age;
+    this.sem = sem;
+}
+
 function linq_query()
 {
-	var fruits = ['apple', 'mango', 'banana', 'grapes'];
-	var new_fruits =
-	            from fruit in fruits
-				where {fruit.length == 5}
-				select fruit.length;
+    var students = [];
+    for(var i = 0; i < 5; ++i) {
+        students.push(new Student('s' + i, Math.floor(Math.random() * 6) + 1, i + 1));
+    }
 
-	console.log(new_fruits);
+	var new_students =
+	            from stud in students
+				group stud by stud.age into sl
+				select sl;
+
+	console.log(new_students);
 }
 linq_query();

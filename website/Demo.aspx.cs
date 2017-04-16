@@ -10,13 +10,13 @@ public partial class Demo : System.Web.UI.Page
     private const string examplesPath = @"C:\Users\Gautham\Projects\Github\linq-js\website\Bin\inputs";
 
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {        
         if (input_code.InnerText.Length == 0)
         {
             Directory.SetCurrentDirectory(transpilerExecPath);
 
-            string exampleInput = File.ReadAllText(examplesPath + @"\input.txt");
-            input_code.InnerText = exampleInput;
+            string exampleInput = File.ReadAllText(examplesPath + @"\input_groupby.txt");
+            input_code.InnerText = exampleInput;                     
         }
     }
 

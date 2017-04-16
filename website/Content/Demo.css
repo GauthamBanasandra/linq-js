@@ -1,3 +1,25 @@
 ﻿.run {
     padding-bottom: 5px;
 }
+
+#input_code {
+    border-radius: 5px 5px 5px 5px;
+    width: 550px;
+    height: 500px;
+    font-size: 15px;
+}
+
+#transpiled_code {
+    border-radius: 5px 5px 5px 5px;
+    width: 700px;
+    height: 650px;
+    font-size: 15px;
+}
+
+.output {
+    width: 700px;
+}
+
+body {
+    background-color: #1abc9c !important;
+}
