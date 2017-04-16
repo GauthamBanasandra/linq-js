@@ -4,25 +4,34 @@ using System.IO;
 
 public partial class Demo : System.Web.UI.Page
 {
+    private const string transpilerExecPath = @"C:\Users\Gautham\Projects\Github\linq-js\website\Bin\src";
+    private const string webInputPath = transpilerExecPath + @"\web_inputs\web_input.txt";
+    private const string webTranspiledCodePath = transpilerExecPath + @"\web_inputs\web_transpiled_code.txt";
+    private const string examplesPath = @"C:\Users\Gautham\Projects\Github\linq-js\website\Bin\inputs";
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (input_code.InnerText.Length == 0)
+        {
+            Directory.SetCurrentDirectory(transpilerExecPath);
 
+            string exampleInput = File.ReadAllText(examplesPath + @"\input.txt");
+            input_code.InnerText = exampleInput;
+        }
     }
 
     protected void Button_Transpile_Click(object sender, EventArgs e)
     {
-        const string transpilerExecPath = @"C:\Users\Gautham\Projects\Github\linq-js\website\Bin\src";
-        Directory.SetCurrentDirectory(transpilerExecPath);
+        if (input_code.InnerText.Length > 0)
+        {
+            File.WriteAllText(webInputPath, input_code.InnerText);
 
-        string webInputPath = Directory.GetCurrentDirectory() + @"\web_inputs\web_input.txt";
-        string webInput = input_code.InnerText;
-        File.WriteAllText(webInputPath, webInput);
-
-        string transpiledCode = RunTranspiler(webInputPath);
-        output_code.InnerText = transpiledCode;
+            string transpiledCode = RunTranspiler();
+            transpiled_code.InnerText = transpiledCode;
+        }
     }
 
-    private string RunTranspiler(string webInputPath)
+    private string RunTranspiler()
     {
         ProcessStartInfo transpilerProcessInfo = new ProcessStartInfo()
         {
@@ -54,6 +63,42 @@ public partial class Demo : System.Web.UI.Page
 
     protected void Button_Run_Click(object sender, EventArgs e)
     {
+        if (transpiled_code.InnerText.Length > 0)
+        {
+            File.WriteAllText(webTranspiledCodePath, transpiled_code.InnerText);
 
+            string jsOutput = ExecJs();
+            js_output.InnerText = jsOutput;
+        }
+    }
+
+    private string ExecJs()
+    {
+        ProcessStartInfo nodeProcessInfo = new ProcessStartInfo()
+        {
+            CreateNoWindow = false,
+            UseShellExecute = false,
+            FileName = "node",
+            Arguments = webTranspiledCodePath,
+            WindowStyle = ProcessWindowStyle.Hidden,
+            RedirectStandardOutput = true,
+            RedirectStandardInput = true
+        };
+
+        string execJsOuput = string.Empty;
+
+        try
+        {
+            Process nodeProcess = Process.Start(nodeProcessInfo);
+            execJsOuput = nodeProcess.StandardOutput.ReadToEnd();
+            nodeProcess.WaitForExit();
+            nodeProcess.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine("Error:\t" + e.Message);
+        }
+
+        return execJsOuput;
     }
 }

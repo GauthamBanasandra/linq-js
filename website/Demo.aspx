@@ -41,15 +41,16 @@
                     <asp:Button Text="Transpile" runat="server" ID="button_transpile" class="btn btn-primary btn-lg" OnClick="Button_Transpile_Click" />
                 </div>
                 <div class="col-sm-5">
-                    <label for="output_code">Transpiled code:</label>
-                    <textarea class="form-control" rows="15" id="output_code" runat="server"></textarea>
+                    <label for="transpiled_code">Transpiled code:</label>
+                    <textarea class="form-control" rows="30" id="transpiled_code" runat="server"></textarea>
                     <br />
                     <div class="text-center">
                         <asp:Button Text="Run" ID="button_run" class="btn btn-success btn-lg" OnClick="Button_Run_Click" runat="server" />
                     </div>
                     <br />                    
                     <div class="well well-lg">
-                        <p class="lead">Output:</p>
+                        <p class="lead">Output:</p>                        
+                        <p runat="server" id="js_output"></p>
                     </div>
                 </div>
             </div>
