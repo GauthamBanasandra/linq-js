@@ -1,43 +1,58 @@
-function linq_query()
-{
-	var fruits = ['apple', 'mango', 'banana', 'grapes'];
-	var new_fruits =
-	            (function(){
+function Student(name, rollno, sec) {
+    this.name = name;
+    this.rollno = rollno;
+    this.sec = sec;
+}
+
+var classA = [],
+    classB = [];
+
+for (var i = 0; i < 5; ++i) {
+    classA.push(new Student('xyz' + i, Math.floor(Math.random() * 6) + 1, 'A'));
+    classB.push(new Student('abc' + i, Math.floor(Math.random() * 6) + 1, 'B'));
+}
+
+var same_roll =
+    (function(){
    
-				
-				var s1=
-   
+           
+    
+    var s1=
+       
 
 
-(function (){
-	if(typeof fruits === 'undefined')
-		throw 'line 5: fruits is undefined';
-	if(!(fruits instanceof Array))
-		throw 'line 5: expected list for "fruits" but got '+typeof fruits;
+(function () {
+    if(typeof classB === 'undefined')
+        throw 'line -1: classB is undefined';
+    if(typeof classA === 'undefined')
+        throw 'line -1: classA is undefined';
 
-	var newList=[],
-		fruit,
-		selMultiple = false;
+    var newList = [],
+        selMultiple = false,
+        sb,
+        sa;
 
-    if('fruit,fruit.length'.includes(',')) {
-        selMultiple = true;
+    if('sa,sb'.includes(',')) {
+            selMultiple = true;
+        }
+
+    for(var sb of classB) {
+        for(var sa of classA) {
+            if(sa.rollno == sb.rollno) {
+                if(sa.rollno > 2) {
+                    if(selMultiple) {
+                        newList.push([sa,sb]);
+                    } else {
+                        newList.push(sa,sb);
+                    }
+                }
+            }
+        }
     }
 
-	for(fruit of fruits) {
-		if(fruit.length == 5){
-		    if(selMultiple) {
-		        newList.push([fruit,fruit.length]);
-		    } else {
-		        newList.push(fruit,fruit.length);
-		    }
-		}
-	}
-	return newList;
-})();
-return s1;
+    return newList;
+})();return s1;
 })();
 
 
-	console.log(new_fruits);
-}
-linq_query();
+console.log(same_roll);

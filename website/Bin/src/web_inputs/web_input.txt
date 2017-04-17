@@ -1,20 +1,21 @@
-function linq_query()
-{
-	var fruits = ['apple', 'mango', 'banana', 'grapes'];
-	var new_fruits =
-	    from fruit in
-	        (
-	            from fr in
-	                (
-                        from fru in fruits
-                        select fru
-                    )
-	            where {fr.length <= 5}
-	            select fr
-            )
-        where {fruit.length == 5}
-        select fruit;
-
-	console.log(new_fruits);
+function Student(name, rollno, sec) {
+    this.name = name;
+    this.rollno = rollno;
+    this.sec = sec;
 }
-linq_query();
+
+var classA = [],
+    classB = [];
+
+for (var i = 0; i < 5; ++i) {
+    classA.push(new Student('xyz' + i, Math.floor(Math.random() * 6) + 1, 'A'));
+    classB.push(new Student('abc' + i, Math.floor(Math.random() * 6) + 1, 'B'));
+}
+
+var same_roll =
+    from sa in classA
+    join sb in classB on sa.rollno equals sb.rollno
+    where {sa.rollno > 2}
+    select [sa, sb];
+
+console.log(same_roll);

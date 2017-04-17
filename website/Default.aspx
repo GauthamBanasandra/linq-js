@@ -18,7 +18,7 @@
             <div class="jumbotron">
                 <h1>LINQ Js</h1>
                 <p class="lead">Embed LINQ statements into JavaScript</p>
-                <a href="/Demo.aspx" class="btn btn-lg btn-primary">See it in action!</a>
+                <a href="/Run.html" class="btn btn-lg btn-primary">See it in action!</a>
             </div>
             <div class="row proj_info">
                 <div class="col-lg-6 proj_info">

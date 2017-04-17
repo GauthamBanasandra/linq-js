@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Web.UI.HtmlControls;
@@ -13,36 +14,42 @@ public partial class Demo : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Directory.SetCurrentDirectory(transpilerExecPath);
+        Directory.SetCurrentDirectory(transpilerExecPath);        
 
-        if (IsPostBack)
+        Response.Clear();
+        string action = Request.QueryString["action"];
+        switch (action)
         {
-            input_code.InnerText = File.ReadAllText(webInputPath);
-        }
-        else
-        {
-            string exampleFileName = Request.QueryString["filename"];
-
-            if (exampleFileName != null)
-            {
+            case "get_file":
+                string exampleFileName = Request.QueryString["filename"];
                 string exampleInput = File.ReadAllText(examplesPath + @"\" + exampleFileName);
-                input_code.InnerText = exampleInput;
-            }
-        }        
-    }
+                Response.Write(exampleInput);
+                break;
+            case "transpile":
+                string transpiler_input = Request.Form["transpilerInput"];
+                if (transpiler_input.Length > 0)
+                {
+                    File.WriteAllText(webInputPath, transpiler_input);
 
-    protected void Button_Transpile_Click(object sender, EventArgs e)
-    {
-        Debug.WriteLine("Input code:" + ta_input_code.InnerText);
+                    string transpiledCode = RunTranspiler();
+                    Response.Write(transpiledCode);
+                }
+                break;
+            case "run":
+                string js_input = Request.Form["jsInput"];
+                if (js_input.Length > 0)
+                {
+                    File.WriteAllText(webTranspiledCodePath, js_input);
 
-        if (ta_input_code.InnerText.Length > 0)
-        {
-            File.WriteAllText(webInputPath, ta_input_code.InnerText);
-
-            string transpiledCode = RunTranspiler();
-            transpiled_code.InnerText = transpiledCode;
+                    string jsOutput = ExecJs();
+                    Response.Write(jsOutput);
+                }
+                break;
+            default:
+                break;
         }
-    }
+        Response.End();
+    }    
 
     private string RunTranspiler()
     {
@@ -72,17 +79,6 @@ public partial class Demo : System.Web.UI.Page
         }
 
         return transpilerOutput;
-    }
-
-    protected void Button_Run_Click(object sender, EventArgs e)
-    {
-        if (transpiled_code.InnerText.Length > 0)
-        {
-            File.WriteAllText(webTranspiledCodePath, transpiled_code.InnerText);
-
-            string jsOutput = ExecJs();
-            js_output.InnerText = jsOutput;
-        }
     }
 
     private string ExecJs()

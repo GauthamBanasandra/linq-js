@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>LINQ Js Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/Demo.css" rel="stylesheet" />
+    <script src="Scripts/jquery-3.2.1.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/ace/ace.js"></script>
+    <script>
+        var examples = {
+            'li_select_trivial': 'Demo.aspx?filename=input.txt&action=get_file',
+            'li_select_recursive': 'Demo.aspx?filename=input_recursive.txt&action=get_file',
+            'li_select_multiple': 'Demo.aspx?filename=input_select_multiple.txt&action=get_file',
+            'li_groupby_trivial': 'Demo.aspx?filename=input_groupby.txt&action=get_file',
+            'li_groupby_recursive': 'Demo.aspx?filename=input_groupby_recursive.txt&action=get_file',
+            'li_orderby_trivial': 'Demo.aspx?filename=input_orderby.txt&action=get_file',
+            'li_orderby_recursive': 'Demo.aspx?filename=input_orderby_recursive.txt&action=get_file',
+            'join': 'Demo.aspx?filename=input_join.txt&action=get_file',
+        };
+
+        window.onload = function () {
+            var input_code_editor = ace.edit("input_code");
+            input_code_editor.setTheme("ace/theme/monokai");
+            input_code_editor.getSession().setMode("ace/mode/javascript");
+            input_code_editor.getSession().setUseWorker(false);
+
+            var transpiled_code_editor = ace.edit("transpiled_code");
+            transpiled_code_editor.setTheme("ace/theme/monokai");
+            transpiled_code_editor.getSession().setMode("ace/mode/javascript");
+
+            $('#button_transpile_bs').click(function (event) {
+                $.post('Demo.aspx?action=transpile', { transpilerInput: input_code_editor.getValue() }, function (data, status) {
+                    transpiled_code_editor.setValue(data);
+                });
+            });
+
+            $('#button_run_bs').click(function (event) {
+                $.post('Demo.aspx?action=run', { jsInput: transpiled_code_editor.getValue() }, function (data, status) {
+                    document.getElementById('js_output').innerHTML = data;
+                });
+            });
+
+            var div_js_output = $('#js_output');
+            $('#new').click(function (event) {
+                input_code_editor.setValue('');
+                transpiled_code_editor.setValue('');
+                div_js_output.html('');
+            });
+
+            Object.keys(examples).forEach(function (key) {
+                $('#' + key).click(function (event) {
+                    $.get(examples[key], function (data) {
+                        input_code_editor.setValue(data);
+                    });
+                    transpiled_code_editor.setValue('');
+                    div_js_output.html('');
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row text-center">
+            <h1>LINQ Js Demo</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 navbar_">
+                <ul class="nav nav-pills nav-justified">
+                    <li>
+                        <a href="Default.aspx">
+                            <h3>Home</h3>
+                        </a>
+                    </li>
+                    <li id="new">
+                        <a href="#">
+                            <h3>New</h3>
+                        </a>
+                    </li>
+                    <li class="dropdown btn-lg">
+                        <a class="dropdown-toggle btn-lg" data-toggle="dropdown">
+                            <h3>Select</h3>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu btn-lg">
+                            <li id="li_select_trivial">
+                                <a href="#"><h4>Trivial</h4></a>
+                            </li>
+                            <li id="li_select_recursive">
+                                <a href="#"><h4>Recursive</h4></a>
+                            </li>
+                            <li id="li_select_multiple">
+                                <a href="#"><h4>Select Multiple</h4></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown btn-lg">
+                        <a class="dropdown-toggle btn-lg" data-toggle="dropdown">
+                            <h3>Group By</h3>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu btn-lg">
+                            <li id="li_groupby_trivial">
+                                <a href="#">
+                                    <h4>Trivial</h4>
+                                </a>
+                            </li>
+                            <li id="li_groupby_recursive">
+                                <a href="#">
+                                    <h4>Recursive</h4>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown btn-lg">
+                        <a class="dropdown-toggle btn-lg" data-toggle="dropdown">
+                            <h3>Order By</h3>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu btn-lg">
+                            <li id="li_orderby_trivial">
+                                <a href="#">
+                                    <h4>Trivial</h4>
+                                </a>
+                            </li>
+                            <li id="li_orderby_recursive">
+                                <a href="#">
+                                    <h4>Recursive</h4>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="join">
+                        <a href="#">
+                            <h3>Join</h3>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="form-group">
+                    <label for="input_code">Code:</label>
+                    <div id="input_code"></div>
+                </div>
+                <textarea style="display:none" id="input_code_bs"></textarea>
+            </div>
+            <div class="col-sm-2 text-center">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <button class="btn btn-primary btn-lg" id="button_transpile_bs">Transpile</button>
+            </div>
+            <div class="col-sm-5">
+                <label for="transpiled_code">Transpiled code:</label>
+                <div id="transpiled_code"></div>
+                <br />
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg" id="button_run_bs">Run</button>
+                </div>
+                <br />
+                <div class="well well-lg output">
+                    <p class="lead">Output:</p>
+                    <p id="js_output"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
