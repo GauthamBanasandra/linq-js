@@ -23,3 +23,8 @@
 body {
     background-color: #1abc9c !important;
 }
+
+.navbar_ {
+    background-color: #474e5d;
+    border-radius: 5px 5px 5px 5px;    
+}

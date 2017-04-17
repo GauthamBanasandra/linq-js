@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Web.UI.HtmlControls;
 
 public partial class Demo : System.Web.UI.Page
 {
@@ -10,21 +12,32 @@ public partial class Demo : System.Web.UI.Page
     private const string examplesPath = @"C:\Users\Gautham\Projects\Github\linq-js\website\Bin\inputs";
 
     protected void Page_Load(object sender, EventArgs e)
-    {        
-        if (input_code.InnerText.Length == 0)
-        {
-            Directory.SetCurrentDirectory(transpilerExecPath);
+    {
+        Directory.SetCurrentDirectory(transpilerExecPath);
 
-            string exampleInput = File.ReadAllText(examplesPath + @"\input_groupby.txt");
-            input_code.InnerText = exampleInput;                     
+        if (IsPostBack)
+        {
+            input_code.InnerText = File.ReadAllText(webInputPath);
         }
+        else
+        {
+            string exampleFileName = Request.QueryString["filename"];
+
+            if (exampleFileName != null)
+            {
+                string exampleInput = File.ReadAllText(examplesPath + @"\" + exampleFileName);
+                input_code.InnerText = exampleInput;
+            }
+        }        
     }
 
     protected void Button_Transpile_Click(object sender, EventArgs e)
     {
-        if (input_code.InnerText.Length > 0)
+        Debug.WriteLine("Input code:" + ta_input_code.InnerText);
+
+        if (ta_input_code.InnerText.Length > 0)
         {
-            File.WriteAllText(webInputPath, input_code.InnerText);
+            File.WriteAllText(webInputPath, ta_input_code.InnerText);
 
             string transpiledCode = RunTranspiler();
             transpiled_code.InnerText = transpiledCode;
