@@ -1,0 +1,43 @@
+﻿function linq_query()
+{
+        var fruits = ['apple', 'mango', 'banana', 'grapes'];
+        var new_fruits =
+                    (function(){
+
+
+                                var s1=
+
+
+
+(function (){
+        if(typeof fruits === 'undefined')
+                throw 'line 5: fruits is undefined';
+        if(!(fruits instanceof Array))
+                throw 'line 5: expected list for "fruits" but got '+typeof fruits;
+
+        var newList=[],
+                fruit,
+                selMultiple = false;
+
+    if('fruit'.includes(',')) {
+        selMultiple = true;
+    }
+
+        for(fruit of fruits) {
+                if(fruit.length == 5){
+                    if(selMultiple) {
+                        newList.push([fruit]);
+                    } else {
+                        newList.push(fruit);
+                    }
+                }
+        }
+        return newList;
+})();
+return s1;
+})();
+
+
+        console.log(new_fruits);
+}
+linq_query();

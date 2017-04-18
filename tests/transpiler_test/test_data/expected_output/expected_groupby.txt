@@ -1,0 +1,42 @@
+﻿function Student(name, age, sem) {
+    this.name = name;
+    this.age = age;
+    this.sem = sem;
+}
+
+function linq_query()
+{
+    var students = [];
+    for(var i = 0; i < 5; ++i) {
+        students.push(new Student('s' + i, Math.floor(Math.random() * 6) + 1, i + 1));
+    }
+
+        var new_students =
+                    (function(){
+
+
+                                var s1=
+
+
+
+(function (){
+    var stud,
+        sl = {};
+    for(stud of students) {
+        if(true) {
+            if(sl[stud.age]) {
+                sl[stud.age].push(stud);
+            } else {
+                sl[stud.age] = [stud];
+            }
+        }
+    }
+
+    return sl;
+})();return s1;
+})();
+
+
+        console.log(new_students);
+}
+linq_query();

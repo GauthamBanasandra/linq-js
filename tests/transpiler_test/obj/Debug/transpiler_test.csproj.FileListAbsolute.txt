@@ -1,0 +1,15 @@
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\transpiler_test.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\transpiler_test.pdb
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\obj\Debug\transpiler_test.dll
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\obj\Debug\transpiler_test.pdb
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\tests.exe
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\tests.pdb
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\bin\Debug\tests.exe.config
+C:\Users\Gautham\Projects\Github\linq-js\tests\transpiler_test\obj\Debug\transpiler_test.csprojResolveAssemblyReference.cache

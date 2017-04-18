@@ -1,0 +1,11 @@
+function linq_query()
+{
+	var fruits = ['apple', 'mango', 'banana', 'grapes'];
+	var new_fruits =
+	            from fruit in fruits
+				where {fruit.length == 5}
+				select [fruit, fruit.length];
+
+	console.log(new_fruits);
+}
+linq_query();
