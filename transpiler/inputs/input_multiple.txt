@@ -1,0 +1,27 @@
+function Student(name, age, sem) {
+    this.name = name;
+    this.age = age;
+    this.sem = sem;
+}
+
+var students = [];
+    for(var i = 0; i < 5; ++i) {
+        students.push(new Student('s' + i, Math.floor(Math.random() * 6) + 1, i + 1));
+    }
+
+var students1 =
+    from student in students
+    where {student.age > 2}
+    select student;
+
+var students = [];
+    for(var i = 0; i < 5; ++i) {
+        students.push(new Student('s' + i, Math.floor(Math.random() * 6) + 1, i + 1));
+    }
+
+var students2 =
+    from student in students
+    where {student.age > 2}
+    select student;
+
+console.log('students1', students1, '\n', 'students2', students2);

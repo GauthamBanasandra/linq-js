@@ -29,7 +29,7 @@
 %type <symp> id
 %%
 linq:
-    FROM ID IN src orderby join where groupby SELECT sel_clause  {
+    FROM ID IN src orderby join where groupby SELECT sel_clause {
         bool sel_exec = true;
         struct symtab *id = $2,
                     *src = $4,
@@ -93,6 +93,7 @@ linq:
         }
 
         if(sel_exec) {
+            innermost = true;
             struct symtab args[]= {
                 {id->name, id->lineno},
                 {src->name, src->lineno},
@@ -115,13 +116,15 @@ linq:
             int ob_len=sizeof(ob_args)/sizeof(struct symtab);
             gen_code("./templates/orderby.dat", ob_args, ob_len);
         }
-    }
+    } linq
     | {$$ = NULL;}
     ;
 src:
     ID
     | '(' linq ')'  {
         sprintf($2->name, "s%d", nesting);
+        // debug.
+//        cout << "overwriting source" << endl;
         /*Do not omit this line. Yacc will not be able to perform default action otherwise.*/
         $$=$2;
         ++nesting;
@@ -199,7 +202,7 @@ int main(int argc, char *argv[])
 {
      //"../inputs/input_join.txt"
 //    yyin=fopen(argv[1], "r");
-    yyin=fopen("../inputs/input_groupby.txt", "r");
+    yyin=fopen("../inputs/input_multiple.txt", "r");
     while(!feof(yyin))
         yyparse();
     fclose(yyin);

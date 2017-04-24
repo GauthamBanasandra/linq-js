@@ -1,21 +1,21 @@
-function Student(name, rollno, sec) {
+function Student(name, age, sem) {
     this.name = name;
-    this.rollno = rollno;
-    this.sec = sec;
+    this.age = age;
+    this.sem = sem;
 }
 
-var classA = [],
-    classB = [];
+function linq_query()
+{
+    var students = [];
+    for(var i = 0; i < 5; ++i) {
+        students.push(new Student('s' + i, Math.floor(Math.random() * 6) + 1, i + 1));
+    }
 
-for (var i = 0; i < 5; ++i) {
-    classA.push(new Student('xyz' + i, Math.floor(Math.random() * 6) + 1, 'A'));
-    classB.push(new Student('abc' + i, Math.floor(Math.random() * 6) + 1, 'B'));
+	var new_students =
+	            from stud in students
+				group stud by stud.age into sl
+				select sl;
+
+	console.log(new_students);
 }
-
-var same_roll =
-    from sa in classA
-    join sb in classB on sa.rollno equals sb.rollno
-    where {sa.rollno > 2}
-    select [sa, sb];
-
-console.log(same_roll);
+linq_query();

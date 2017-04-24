@@ -24,13 +24,13 @@
     }
 from  {
         // debug.
-    //            cout << "from" << endl;
+//                cout << "from" << endl;
         BEGIN LINQ;
         yylval.symp=symlook(yytext);
         if(first)
         {
             printf("(function(){\n");
-            first=false;
+            first = false;
         }
         return FROM;
     }
@@ -49,7 +49,7 @@ from  {
         if(yytext[0]=='}') {
             cat = false;
             // debug.
-    //                    cout << expr_str << endl;
+//                        cout << expr_str << endl;
             BEGIN LINQ;
             yylval.symp = symlook(expr_str.c_str());
             expr_str = "";
@@ -106,20 +106,20 @@ from  {
 <LINQ>"("   {
         BEGIN INITIAL;
         // debug.
-        // cout << "begin inner" << endl;
+//         cout << "begin inner" << endl;
         return yytext[0];
     }
 <LINQ>")"    {return yytext[0];}
 <LINQ>[a-zA-Z_$][a-zA-Z0-9_$]+    {
         // debug.
-        // cout << "id " << yytext << endl;
-        yylval.symp=symlook(yytext);
+//         cout << "id " << yytext << endl;
+        yylval.symp = symlook(yytext);
         return ID;
     }
 <LINQ>[a-zA-Z_$][a-zA-Z0-9_$().,]+   {
         yylval.symp = symlook(yytext);
         // debug.
-        // cout << "e_id " << yytext << endl;
+//         cout << "e_id " << yytext << endl;
         return E_ID;
     }
 <LINQ>[0-9]+    {
